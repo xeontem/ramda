@@ -1,0 +1,33 @@
+{
+  "name": "webpack-hint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bar.js",
+  "scripts": {
+    "build": "node_modules\\.bin\\webpack --config webpack.config.js",
+    "start": "webpack-dev-server --open",
+    "server": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "bundle-loader": "^0.5.5",
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.28.7",
+    "express": "^4.15.5",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.30.1",
+    "jshint": "^2.9.5",
+    "jshint-loader": "^0.8.4",
+    "ramda": "^0.24.1",
+    "style-loader": "^0.18.2",
+    "ts-loader": "^2.3.7",
+    "typescript": "^2.5.2",
+    "webpack": "^3.6.0",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-dev-server": "^2.8.2"
+  }
+}
