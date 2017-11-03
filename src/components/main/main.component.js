@@ -93,10 +93,8 @@ let addB = s => s + '_b';
 
 // compose = f => g => z => x => f(g(z(x)));
 
-let composeNRight = x => f => {
-  if(!f) return x;
-  return composeNRight(f(x));
-};
+let composeNRight = x => f => f ? composeNRight(f(x)) : x;
+let composeN = f => x => x ? composeN(f(x)) : x;
 
 let create = x => document.createElement(x);
 
@@ -117,12 +115,19 @@ let addInnerHTML = inner => elem => {
   return elem;
 };
 // -----------------------------------------------------------------------------------
+// a -> z
+// b -> c
 
+// (a -> b)(b -> c)
+
+// curryedAddEvent:: Element -> Element
 let curryedAddEvent = addEvent('click')(x => console.dir(x.target));
+// curryedAddInnerHTML:: Element -> Element
 let curryedAddInnerHTML = addInnerHTML(`inner text`);
 let curryedAddStyle = addStyle({cursor: 'pointer'});
 
-let creator = elems => elems.map(el => create(el));
+// let creator = elems => elems.map(el => create(el));
+let creator = elems => elems.map(create);
 // let combinator = target => f => g => f(target);
 let elems = creator(['div', 'p', 'section']);//(addEvent('click')());
 
@@ -138,6 +143,8 @@ let customizer = mem => e => f => {
 // composeNRight(curryedAddStyle(curryedAddInnerHTML(elem)));
 
 // let temp = elems.map(elem => composeNRight(elem)(curryedAddEvent)(curryedAddInnerHTML)(curryedAddStyle));
+
+
 let temp = elems.map(flipCustom(composeNRight)(curryedAddStyle)(curryedAddInnerHTML)(curryedAddEvent));
 
 
@@ -165,26 +172,20 @@ export default function component() {
 
   btn.innerHTML = 'Click me and check the console!!!';
   btn.onclick = () => import(/* webpackChunkName: "print" */ '../print/print')
-    .then(module => {
-      var print = module.default;
-      print();
-    });
-
-    element.appendChild(btn);
-
-    //---------------------------------------------------- bundle-loader
-    var textP = document.createElement('p');
-    btn = document.createElement('button');
-    btn.onclick = () => {
-      lazyFunc(x => {
-        console.dir(x.default);
-        textP.innerHTML += x.default();
-      });
-    };
-    btn.innerHTML = 'bundle-loader';
+    .then(module => module.default());
   element.appendChild(btn);
 
+  //---------------------------------------------------- bundle-loader
+  var textP = document.createElement('p');
+  btn = document.createElement('button');
+  btn.onclick = () => {
+    lazyFunc(x => {
+      console.dir(x.default);
+      textP.innerHTML += x.default();
+    });
+  };
+  btn.innerHTML = 'bundle-loader';
+  element.appendChild(btn);
   element.appendChild(textP);
-
   return element;
 }
