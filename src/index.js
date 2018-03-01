@@ -1,39 +1,22 @@
 import './global.css';
 import R from 'ramda';
-import component from './components/main/main.component';
+import { response } from './data';
+import { custom } from './custom.lenses';
+custom();
+// console.log(R.map(x=>x, {}))
 
-let element = component();
-document.body.appendChild(element);
+// import component from './components/main/main.component';
+
+// R.flatMap = o => R.flatten(R.map(o));
+// R.flatMap = o => compose(R.flatten)(R.map)(o);
+// R.flatMap = f => compose(R.flatten)(R.map(f));
+// R.flatMap = f => compose(compose(R.flatten))(R.map)(f);
+const flatMap = R.compose(R.compose(R.flatten))(R.map); // chain
+
+// let element = component();
+// document.body.appendChild(element);
 
 // alert('works')
-const response = {
-  parent: {
-    child: [
-      {inner: [{field: 'valid_field1'}, {field: 'bad_field2'}, {field: 'valid_field3'}, false]},
-      {inner: [{field: 'valid_field4'}, {field: 'valid_field5'}, {field: null}, {}]},
-      {inner: [{field: 'valid_field7'}, {field: 'valid_field8'}, {field: 'valid_notfield9'}, true]},
-      {},
-      undefined,
-      null,
-      false
-    ],
-    // flights: [],
-    flights: [
-      [{flightRPH: '1', selected: true},  {flightRPH: '2', selected: true},  {flightRPH: '3', selected: true}, null],
-      [{flightRPH: '5', selected: true},  {flightRPH: '6', selected: true},  {flightRPH: '7', selected: true}],
-      [{flightRPH: '8', selected: false}, {flightRPH: '9', selected: false}, {flightRPH: '10', selected: false}],
-      [{flightRPH: '11', selected: true},  {flightRPH: '12', selected: null},  {flightRPH: '13', selected: true}],
-      [{flightRPH: '14', selected: true},  {flightRPH: '15', selected: true},  {flightRPH: '16', selected: true}],
-      null,
-      false,
-      [{flightRPH: '17', selected: false}, {flightRPH: '18', selected: false}, {flightRPH: '19', selected: false}],
-      [{flightRPH: '20', selected: true},  {flightRPH: '21', selected: true},  {flightRPH: '22', selected: true}],
-      [{flightRPH: '23', selected: false}, {flightRPH: '24', selected: false}, {flightRPH: '25', selected: false}],
-      []
-    ]
-  }
-};
-
 const debug = val => (console.log(val), val);
 // const identity = x => x;
 // const constant = x => y => x;
@@ -49,23 +32,23 @@ const flip = f => a => b => f(b)(a);// C - combinator
 // Y = F => F(x => Y(F)(x));// Y - combinator
 
 const scope = {
-	errors: [],
-	fields: []
+  errors: [],
+  fields: []
 };
 
 //-------------- Object -------------------------------------
-const arrayM = arr => arr && Array.isArray(arr) ? arr : [];
-const objM = obj => Object(obj) === obj ? obj : {};
+const Marray = arr => arr && Array.isArray(arr) ? arr : [];
+const Mobj = obj => Object(obj) === obj ? obj : {};
 
 const getter = fb => prop => obj => obj && obj[prop] ? obj[prop] : fb;
 
 const fieldGetter = fb => prop => obj => {
-	const maybe = getter(fb)(prop)(obj);
-	return !maybe.error && maybe.includes('valid_field') ? maybe : R.assoc('val', obj[prop], fb);
+  const maybe = getter(fb)(prop)(obj);
+  return !maybe.error && maybe.includes('valid_field') ? maybe : R.assoc('val', obj[prop], fb);
 };
 const selectedFlightGetter = fb => prop => obj => {
-	const maybe = getter(fb)(prop)(obj);
-	return !maybe.error ? obj : R.assoc('text', `flight isn\'t ${obj ? 'selected' : 'exists'}`, R.assoc('flight', obj, maybe));
+  const maybe = getter(fb)(prop)(obj);
+  return !maybe.error ? obj : R.assoc('text', `flight isn\'t ${obj ? 'selected' : 'exists'}`, R.assoc('flight', obj, maybe));
 };
 //----------------------------------------------------------
 
@@ -93,16 +76,19 @@ const selectedGet = R.view(selectedLens);
 // const getfieldsM = obj => compose(R.flatten)(R.map(compose(R.map(fieldGet))(innersGet)))(childsGet(obj));
 // const getfieldsM = obj => compose(compose(R.flatten)(R.map(compose(R.map(fieldGet))(innersGet))))(childsGet)(obj);
 
-// scope.parent.flights.
-const getfieldsM = compose(compose(R.flatten)(R.map(compose(R.map(fieldGet))(innersGet))))(childsGet);
-const fieldsM = getfieldsM(response);
+// const getfieldsM = obj => flatMap(compose(R.map(fieldGet))(innersGet))(childsGet(obj));
+// console.log(childsGet(response))
 
-childsGet(response).map(child => {
-	innersGet(child).map(inner => {
-		const maybe = fieldGet(inner); 
-		maybe.error ? scope.errors.push(maybe) : scope.fields.push(maybe);
-	});
-});
+// // scope.parent.flights.
+// const getfieldsM = compose(compose(R.flatten)(R.map(compose(R.map(fieldGet))(innersGet))))(childsGet);
+// const fieldsM = getfieldsM(response);
+
+// childsGet(response).map(child => {
+//   innersGet(child).map(inner => {
+//     const maybe = fieldGet(inner); 
+//     maybe.error ? scope.errors.push(maybe) : scope.fields.push(maybe);
+//   });
+// });
 //---------------------------------------------------------------------------------------------
 
 // const childs = R.flatten(childsGet(obj).map(child => innersGet(child).map(field => fieldGet(field))));
@@ -116,14 +102,29 @@ childsGet(response).map(child => {
 // R.flatten(R.map())
 // const flights = R.flatten(R.map(R.map(R.map(selectedGet), arrayM), flightsGet(response)));
 // // const childs = obj => R.flatten(compose(R.map(compose(R.map(fieldGet))(innersGet)))(childsGet)(obj));
-scope.fieldsErrors = fieldsM.filter(data => data.error);
-scope.fields = fieldsM.filter(data => !data.error);
-// scope.flightsNotSelected = fieldsM.filter(data => data.error);
-// scope.flights = flights.filter(data => !data.error);
+// scope.fieldsErrors = fieldsM.filter(data => data.error);
+// scope.fields = fieldsM.filter(data => !data.error);
+// // scope.flightsNotSelected = fieldsM.filter(data => data.error);
+// // scope.flights = flights.filter(data => !data.error);
 
 
+// let obj = {
+//   x:2
+// };
+// const getter2 = o => {
+//   // console.log(o)
+//   return o;
+// }
 
-console.dir(scope);
+// const setter = (val, obj) => {
+//   // console.log(/* args */)
+//   return obj;
+// }
+// // console.dir(scope);
+// R.view(R.lens(getter2, setter), obj)
+
+// console.log(obj);
+
 //-----------------------------------|IF EXAMPLE|----------------------------------------------------------
 
 // const getVal = R.curry(R.view);
@@ -199,8 +200,11 @@ console.dir(scope);
 // const rebuildFlights = flights => flights.map(flight => ({ flightSegmentInfo: flight.flightSegmentInfo.filter(segment => segment.selected)}));
 // const rebuildFlights = flights => flights.map(flight => ({ flightSegmentInfo: _.filter(flight.flightSegmentInfo, segment => segment.selected)}));
 // const rebuildFlights = flights => _.map(flights, flight => ({ flightSegmentInfo: _.filter(flight.flightSegmentInfo, segment => segment.selected)}));
-const flippedMap = _flip(_.curry(_.map));
+
+// const flippedMap = _.flip(_.curry(_.map));
+
 // const rebuildFlights = flights => map(flights)(flight => ({ flightSegmentInfo: _.filter(flight.flightSegmentInfo, segment => segment.selected)}));
 // const rebuildFlights = flights => mapF(flight => ({ flightSegmentInfo: _.filter(flight.flightSegmentInfo, segment => segment.selected)}))(flights);
-const rebuildFlights = flippedMap(flight => ({ flightSegmentInfo: _.filter(flight.flightSegmentInfo, segment => segment.selected)}));
-const result = rebuildFlights(orig);
+
+// const rebuildFlights = flippedMap(flight => ({ flightSegmentInfo: _.filter(flight.flightSegmentInfo, segment => segment.selected)}));
+// const result = rebuildFlights(orig);
