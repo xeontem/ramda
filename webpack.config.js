@@ -43,18 +43,18 @@ module.exports = {
         exclude: /node_modules/
       },
       //----------------- jshint ------------------
-      {
-        test: /\.js$/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              ["env", { "modules": false }] // IMPORTANT
-            ]
-          }
-        }],
-        exclude: /node_modules/
-      }
+  //     {
+  //       test: /\.js$/,
+  //       use: [{
+  //         loader: 'babel-loader',
+  //         options: {
+  //           presets: [
+  //             ["env", { "modules": false }] // IMPORTANT
+  //           ]
+  //         }
+  //       }],
+  //       exclude: /node_modules/
+  //     }
     ]
   },
   plugins: [
@@ -66,14 +66,14 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common' // bundle name
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: true
-      },
-      output: {
-        comments: false
-      },
-      sourceMap: true
-    })
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: true
+    //   },
+    //   output: {
+    //     comments: false
+    //   },
+    //   sourceMap: true
+    // })
   ]
 };
