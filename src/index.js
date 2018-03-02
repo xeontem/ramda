@@ -71,6 +71,22 @@ const innersGet = R.view(innerLens);
 const fieldGet = R.view(fieldLens);
 const flightsGet = R.view(flightsPath);
 const selectedGet = R.view(selectedLens);
+
+//------------------ do notation ------------------------
+// const x = { val: 'virgin' };
+// const f = x => x.val += '. f did some dirty job';
+// const g = x => x.val += '. g did some dirty job';
+// const h = x => x.val += '. h did some dirty job';
+
+// const doo = f => g => h => x => (
+//     f(x),
+//     g(x),
+//     h(x)
+// )
+// console.log(doo(f)(g)(h)(x));
+//--------------------------------------------------------
+
+
 //---------------------------------------------------------------------------------------------
 // const getfieldsM = obj => R.flatten(R.map(compose(R.map(fieldGet))(innersGet))(childsGet(obj)));
 // const getfieldsM = obj => compose(R.flatten)(R.map(compose(R.map(fieldGet))(innersGet)))(childsGet(obj));
