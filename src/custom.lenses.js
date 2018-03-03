@@ -12,8 +12,6 @@ import {
 } from './tools/';
 
 export const custom = () => {
-  console.log(flatMap(x => x*10)([[1],[2],[3]]))
-  
   const parentLense = lensProp({})('parent');
   const childLense = lensProp([])('child');
   const everyChildlense = lensProp({});

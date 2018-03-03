@@ -31,6 +31,3 @@ export const fieldGetter = fb => prop =>
 
 export const lensProp = fb => prop => lens(getter(fb)(prop))(setter(fb)(prop));
 export const lensField = fb => prop => lens(fieldGetter(fb)(prop))(setter(fb)(prop));
-
-const func = f => x => f(x);
-console.log(func(func)(x => x + 2)(2))
