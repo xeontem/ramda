@@ -9,7 +9,7 @@ import {
   register
 } from './';
 
-// W(B)(C(B)) === S(W)(C)(B)
+// B(C(B))(C(B)) === W(B)(C(B)) === S(W)(C)(B)
 // export const lens = B(C(B)(B(S)(B(B(map(C))))))(S(W)(C)(B));
 export const lens = get => set => toFunctor => target => map(val => set(val)(target))(toFunctor(get(target)));
 export const view = len => target => show(I)(len(Constant(target))(target));
