@@ -78,12 +78,12 @@ const selectedGet = R.view(selectedLens);
 // const g = x => x.val += '. g did some dirty job';
 // const h = x => x.val += '. h did some dirty job';
 
-// const doo = f => g => h => x => (
+// const doo = x => (
 //     f(x),
 //     g(x),
 //     h(x)
 // )
-// console.log(doo(f)(g)(h)(x));
+// console.log(doo(x));
 //--------------------------------------------------------
 
 
