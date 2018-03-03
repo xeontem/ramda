@@ -4,11 +4,13 @@ import {
   condL,
   Apply,
   I, S, K,
-  C, A, B,
+  C, B, W,
   Constant,
   register
 } from './';
 
+// W(B)(C(B)) === S(W)(C)(B)
+// export const lens = B(C(B)(B(S)(B(B(map(C))))))(S(W)(C)(B));
 export const lens = get => set => toFunctor => target => map(val => set(val)(target))(toFunctor(get(target)));
 export const view = len => target => show(I)(len(Constant(target))(target));
 export const set = len => val => target => show(I)(len(Apply(val))(target));
@@ -29,3 +31,6 @@ export const fieldGetter = fb => prop =>
 
 export const lensProp = fb => prop => lens(getter(fb)(prop))(setter(fb)(prop));
 export const lensField = fb => prop => lens(fieldGetter(fb)(prop))(setter(fb)(prop));
+
+const func = f => x => f(x);
+console.log(func(func)(x => x + 2)(2))
