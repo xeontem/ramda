@@ -9,6 +9,9 @@ export const response = {
         null,
         false
       ],
+      child2: {
+        child: [{field: 'valid_field!!'}]
+      },
       // flights: [],
       flights: [
         [{flightRPH: '1', selected: true},  {flightRPH: '2', selected: true},  {flightRPH: '3', selected: true}, null],

@@ -1,5 +1,5 @@
 import {
-  map,
+  fmap,
   show,
   condL,
   Apply,
@@ -11,7 +11,7 @@ import {
 
 // B(C(B))(C(B)) === W(B)(C(B)) === S(W)(C)(B)
 // export const lens = B(C(B)(B(S)(B(B(map(C))))))(S(W)(C)(B));
-export const lens = get => set => toFunctor => target => map(val => set(val)(target))(toFunctor(get(target)));
+export const lens = get => set => toFunctor => target => fmap(val => set(val)(target))(toFunctor(get(target)));
 export const view = len => target => show(I)(len(Constant(target))(target));
 export const set = len => val => target => show(I)(len(Apply(val))(target));
 
