@@ -4,13 +4,13 @@ import {
   B,
   I,
   set,
-  lmap,
   fmap,
   view,
   show,
   Apply,
   filter,
   getter,
+  setMap,
   viewMap,
   flatMap,
   Constant,
@@ -28,7 +28,7 @@ export const custom = () => {
   const innerLense = lensProp([])('inner');
   const fieldLense = lensField('')('field');
   // custom
-  console.log(response)
+  console.log(response);
   // console.log(set(parentLense)({new: 'parent'})(response))
   // console.log(set(parentLense)(['new', 'parent'])(response));
   // console.log(set(B(parentLense)(childLense))(['new', 'child'])(response));
@@ -36,10 +36,11 @@ export const custom = () => {
   // const children = view(B(parentLense)(childLense))(response);
   // const parsed = lflatMap(B(fmap(view(fieldLense)))(view(innerLense)))(children)
   // console.log(filter(existance)(parsed));
-  const arr = [{field:'valid_field'},{field:'2'}];
+  const arr = [{field:'valid2_field'},{field:'2'}];
 
   // const temp = view(B(fmap)(fieldLense))(arr)
-  const temp = view(B(parentLense)(B(child2Lense)(B(childLense)(B(fmap)(fieldLense)))))(response);
+  // const temp = view(B(B(B(B(parentLense)(child2Lense))(childLense))(viewMap))(fieldLense))(response);
+  const temp = set(B(B(B(B(parentLense)(child2Lense))(childLense))(setMap))(fieldLense))('new value')(response);
   console.log(temp)
   
   // ramda

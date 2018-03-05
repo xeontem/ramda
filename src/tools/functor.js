@@ -1,11 +1,17 @@
+import { 
+  I,
+  B,
+  fmap,
+  show,
+} from './';
 // ------------------ Functors ------------------------
-export const Constant = val => x => ({
-  show: f => f(x),
-  map: f => Constant(val)(x)
+export const Constant = a1 => a2 => ({
+  show: () => a2,
+  map: f => Constant(a1)(a2)
 });
 
-export const Apply = val => x => ({
-  show: f => f(val),
-  map: f => Apply(f(val))(x)
+export const Apply = a1 => a2 => ({
+  show: () => a1,
+  map: f => Apply(f(a1))(a2)
 });
 //------------------------------------------------------

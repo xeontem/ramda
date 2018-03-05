@@ -10,7 +10,7 @@ export const response = {
         false
       ],
       child2: {
-        child: [{field: 'valid_field!!'}]
+        child: [{field: 'valid_field11111'}, {field: 'valid22_field22222'}]
       },
       // flights: [],
       flights: [
