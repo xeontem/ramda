@@ -1,3 +1,5 @@
+'use strict';
+
 import { K, debug } from './';
 const registry = [];
 window.registry = registry;

@@ -1,3 +1,5 @@
+'use strict';
+
 import {
   fmap,
   show,
@@ -37,3 +39,9 @@ export const fieldGetter = fb => prop =>
 
 export const lensProp = fb => prop => lens(getter(fb)(prop))(setter(fb)(prop));
 export const lensField = fb => prop => lens(fieldGetter(fb)(prop))(setter(fb)(prop));
+
+const inner = a => console.log(arguments)
+const f = () => {
+  inner();
+}
+f()

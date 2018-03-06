@@ -1,3 +1,5 @@
+'use strict';
+
 import R from 'ramda';
 import { response } from './data';
 import {
@@ -48,8 +50,8 @@ export const custom = () => {
   const rparent = R.lens(getter({})('parent'), R.assoc('parent'));
   const rchild = R.lens(getter({})('child'), R.assoc('child'));
   const rfield = R.lens(fieldGetter('')('field'), R.assoc('field'));
-  const rtemp = R.view(B(B(B(rparent)(rchild))(supermap))(rfield), child);
-  console.log(rtemp.map(R.view(rfield)))
+  // const rtemp = R.view(B(B(B(rparent)(rchild))(supermap))(rfield), child);
+  // console.log(rtemp.map(R.view(rfield)))
   
   // console.log(R.set(rparent, ['new', 'parent'], response))
   // console.log(R.set(R.compose(rparent, rchild), ['new', 'child'], response))
