@@ -23,10 +23,11 @@ export const over = lens => func => target => show(lens(Apply(func))(target));
 export const set = B(C(B)(K))(over);
 
 // methods to work with lenses inside arrays without full application
-export const viewMap = toFunctor => t => Constant()(fmap(B(show)(toFunctor))(t));
+export const viewMap = toFunctor => t => Constant(t)(fmap(B(show)(toFunctor))(t));
 export const overMap = toFunctor => t => Apply(K(fmap(B(show)(toFunctor))(t)))(t);
 export const setMap = overMap;
 
+export const path = arr => arr.reduce((acc, val) => B(acc)(val));
 // ----------- accessors ----------------------
 export const getter = fb => prop => obj => (obj && Object(obj) === obj && prop in obj && obj[prop]) ||
   register(fb)({prop, obj});
