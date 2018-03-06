@@ -6,6 +6,7 @@ import {
   B,
   I,
   set,
+  path,
   fmap,
   view,
   show,
@@ -46,13 +47,15 @@ export const custom = () => {
 
   const addExcl = s => s + '! from over';
   // const temp = view(B(viewMap)(fieldLense))(arr)
-  const temp = view(B(B(B(B(parentLense)(child2Lense))(childLense))(viewMap))(fieldLense))(response);
+  // const temp = view(B(B(B(B(parentLense)(child2Lense))(childLense))(viewMap))(fieldLense))(response);
   // const temp = set(B(B(B(B(parentLense)(child2Lense))(childLense))(setMap))(fieldLense))('new value')(response);
   // const temp = over(B(B(B(B(parentLense)(child2Lense))(childLense))(setMap))(fieldLense))(addExcl)(response);
-  // const temp = over(B(B(B(parentLense)(childLense))(overMap))(fieldLense))(addExcl)(child);
   // const temp = set(B(B(B(parentLense)(childLense))(overMap))(fieldLense))('hahahha')(child);
   // const temp = set(B(parentLense)(childLense))('hahahha')(child);
-  console.log(temp)
+  // const temp = over(B(B(B(parentLense)(childLense))(overMap))(fieldLense))(addExcl)(child);
+  const temp = over(path([parentLense, childLense, overMap, fieldLense]))(addExcl)(child);
+  // const temp = over(B(parentLense)(childLense))(fmap(over(fieldLense)(addExcl)))(child);
+  console.log(temp);
   
   // ramda
   const rparent = R.lens(getter({})('parent'), R.assoc('parent'));
