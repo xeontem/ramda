@@ -20,7 +20,6 @@ export const filter = p => t => t && t.filter && t.filter(p) || t;
 export const flatMap = f => t => t && t.reduce && t.reduce((total, val) => total.concat(f(val)), []);
 
 // lenses
-export const viewMap = f => t => B(fmap)(B(B(show(I)))(f))(t);
 export const viewflatMap = f => t => B(flatMap)(B(B(show(I)))(f))(t);
 
 // curried standart methods
