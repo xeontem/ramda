@@ -2,18 +2,17 @@
 
 import { 
   I,
-  B,
-  fmap,
-  show,
+  B, K, C,
+  debug
 } from './';
 // ------------------ Functors ------------------------
 export const Constant = () => a2 => ({
-  show: () => a2,
+  show: K(a2),
   map: f => Constant()(a2)
 });
-
-export const Apply = a1 => () => ({
-  show: () => a1,
-  map: f => Apply(f(a1))()
+//                   f       get(tar)  
+export const Apply = func => tar => ({
+  show: K(func(tar)),
+  map: f => Apply(K(f(func(tar))))(tar)
 });
 //------------------------------------------------------
